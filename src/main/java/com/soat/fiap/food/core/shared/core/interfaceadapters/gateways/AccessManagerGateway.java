@@ -1,7 +1,7 @@
 package com.soat.fiap.food.core.shared.core.interfaceadapters.gateways;
 
-import com.soat.fiap.food.core.shared.infrastructure.in.web.api.auth.exceptions.AccessDeniedException;
 import com.soat.fiap.food.core.shared.infrastructure.common.source.AccessManagerSource;
+import com.soat.fiap.food.core.shared.infrastructure.in.web.api.auth.exceptions.AccessDeniedException;
 
 import lombok.extern.slf4j.Slf4j;
 
