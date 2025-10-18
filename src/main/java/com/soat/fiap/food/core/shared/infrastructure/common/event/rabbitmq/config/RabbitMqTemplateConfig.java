@@ -1,4 +1,4 @@
-package com.soat.fiap.food.core.shared.infrastructure.out.event.publisher.rabbitmq.config;
+package com.soat.fiap.food.core.shared.infrastructure.common.event.rabbitmq.config;
 
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

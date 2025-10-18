@@ -1,8 +1,11 @@
 package com.soat.fiap.food.core.shared.infrastructure.out.exceptions;
 
+import lombok.Getter;
+
 /**
  * Exceção lançada quando existe um erro de retorno de uma API
  */
+@Getter
 public class APIException extends RuntimeException {
 
 	private final int statusCode;
@@ -17,7 +20,4 @@ public class APIException extends RuntimeException {
 		this.statusCode = statusCode;
 	}
 
-	public int getStatusCode() {
-		return statusCode;
-	}
 }
