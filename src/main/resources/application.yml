@@ -2,12 +2,6 @@ spring:
   application:
     name: foodcore-shared
 
-  # Upload de arquivos
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 15MB
-
 # Azure Storage Configuration
 azure:
   storage:

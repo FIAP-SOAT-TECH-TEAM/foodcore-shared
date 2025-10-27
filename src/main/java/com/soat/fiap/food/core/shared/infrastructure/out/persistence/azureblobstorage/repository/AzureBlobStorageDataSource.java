@@ -11,7 +11,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.soat.fiap.food.core.shared.core.interfaceadapters.dto.FileUploadDTO;
 import com.soat.fiap.food.core.shared.infrastructure.common.source.ImageDataSource;
-import com.soat.fiap.food.core.shared.infrastructure.out.persistence.azureblobstorage.config.AzureStorageProperties;
+import com.soat.fiap.food.core.shared.infrastructure.out.persistence.azureblobstorage.config.AzureBlobStorageProperties;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component @RequiredArgsConstructor @Slf4j
 public class AzureBlobStorageDataSource implements ImageDataSource {
 
-	private final AzureStorageProperties properties;
+	private final AzureBlobStorageProperties properties;
 
 	/**
 	 * Realiza o upload de uma imagem para o Azure Blob Storage, em um caminho
