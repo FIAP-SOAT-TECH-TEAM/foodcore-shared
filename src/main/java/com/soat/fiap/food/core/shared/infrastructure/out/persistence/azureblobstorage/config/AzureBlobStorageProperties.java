@@ -22,7 +22,7 @@ import lombok.Data;
  * </pre>
  */
 @Data @Configuration @ConfigurationProperties(prefix = "azure.storage")
-public class AzureStorageProperties {
+public class AzureBlobStorageProperties {
 
 	/**
 	 * String de conexão completa com a conta do Azure Blob Storage. Essa string
