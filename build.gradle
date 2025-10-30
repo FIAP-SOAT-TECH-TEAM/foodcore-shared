@@ -7,6 +7,7 @@ plugins {
 	id 'org.sonarqube' version '4.4.1.3373'
 	id 'com.diffplug.spotless' version '6.25.0'
 	id("co.uzzu.dotenv.gradle") version "4.0.0"
+	id 'java-library'
 }
 
 group = 'com.soat.fiap'
@@ -52,6 +53,7 @@ ext {
 	set('springdocVersion', "2.8.4")
 	set('lombokVersion', "1.18.28")
 	set('azureBlobSdk', "12.25.0")
+	set('gsonVersion', "2.11.0")
 }
 
 dependencies {
@@ -63,6 +65,9 @@ dependencies {
 
 	// SpringDoc (Swagger/OpenAPI)
 	compileOnly "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
+
+	// Gson
+	api("com.google.code.gson:gson:${gsonVersion}")
 
 	// Lombok e MapStruct
 	compileOnly 'org.projectlombok:lombok'
