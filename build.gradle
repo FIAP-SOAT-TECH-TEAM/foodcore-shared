@@ -62,6 +62,7 @@ dependencies {
 	compileOnly 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compileOnly 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	// SpringDoc (Swagger/OpenAPI)
 	compileOnly "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
