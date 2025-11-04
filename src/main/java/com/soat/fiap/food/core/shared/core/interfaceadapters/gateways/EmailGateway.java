@@ -19,13 +19,15 @@ public class EmailGateway {
 	/**
 	 * Envia um e-mail para o usuário autenticado.
 	 *
+	 * @param recipient
+	 *            destinatário do e-mail.
 	 * @param subject
-	 *            assunto do e-mail
+	 *            o assunto do e-mail
 	 * @param body
-	 *            corpo do e-mail (pode ser HTML)
+	 *            o corpo do e-mail (pode ser HTML)
 	 */
-	public void sendEmailToAuthenticatedUser(String subject, String body) {
-		log.debug("Enviando e-mail ao usuário autenticado com assunto: {}", subject);
-		emailDataSource.sendEmailToAuthenticatedUser(subject, body);
+	public void sendEmail(String recipient, String subject, String body) {
+		log.debug("Enviando e-mail ao destinatário: {} com assunto: {}", recipient, subject);
+		emailDataSource.sendEmail(recipient, subject, body);
 	}
 }
