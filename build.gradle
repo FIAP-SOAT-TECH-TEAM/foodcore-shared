@@ -17,6 +17,8 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+	withSourcesJar()
+	withJavadocJar()
 }
 
 configurations {
@@ -54,6 +56,7 @@ ext {
 	set('lombokVersion', "1.18.28")
 	set('azureBlobSdk', "12.25.0")
 	set('gsonVersion', "2.11.0")
+	set('awsCognitoSdk', "2.37.3")
 }
 
 dependencies {
@@ -82,6 +85,9 @@ dependencies {
 
 	// Azure Storage Blob
 	implementation("com.azure:azure-storage-blob:${azureBlobSdk}")
+
+	// AWS Cognito SDK
+	implementation("software.amazon.awssdk:cognitoidentityprovider:${awsCognitoSdk}")
 }
 
 tasks.named('test') {

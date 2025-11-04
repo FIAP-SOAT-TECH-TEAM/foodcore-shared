@@ -6,8 +6,10 @@ package com.soat.fiap.food.core.shared.infrastructure.common.source;
 public interface EmailDataSource {
 
 	/**
-	 * Envia um e-mail simples (texto ou HTML) para o usuário autenticado.
+	 * Envia um e-mail simples (texto ou HTML) para um destinatário.
 	 *
+	 * @param recipient
+	 *            destinatário do e-mail.
 	 * @param subject
 	 *            o assunto do e-mail
 	 * @param body
@@ -15,5 +17,5 @@ public interface EmailDataSource {
 	 * @throws RuntimeException
 	 *             se ocorrer erro ao enviar o e-mail
 	 */
-	void sendEmailToAuthenticatedUser(String subject, String body);
+	void sendEmail(String recipient, String subject, String body);
 }

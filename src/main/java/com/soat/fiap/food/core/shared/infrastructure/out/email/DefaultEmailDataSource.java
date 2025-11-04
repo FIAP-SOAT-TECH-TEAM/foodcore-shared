@@ -1,5 +1,6 @@
 package com.soat.fiap.food.core.shared.infrastructure.out.email;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -16,19 +17,18 @@ import lombok.extern.slf4j.Slf4j;
  * Implementação padrão de {@link EmailDataSource}, baseada em SMTP, responsável
  * por enviar e-mails para o usuário autenticado.
  */
-@Component @RequiredArgsConstructor @Slf4j
+@Component @RequiredArgsConstructor @ConditionalOnProperty(prefix = "spring.mail", name = "host") @Slf4j
 public class DefaultEmailDataSource implements EmailDataSource {
 
 	private final JavaMailSender mailSender;
 	private final AuthenticatedUserSource authenticatedUserSource;
 
 	@Override
-	public void sendEmailToAuthenticatedUser(String subject, String body) {
-		String recipient = authenticatedUserSource.getEmail();
+	public void sendEmail(String recipient, String subject, String body) {
 
 		if (recipient == null || recipient.isBlank()) {
-			log.info("Usuário autenticado não possui e-mail válido");
-			return;
+			log.error("Não foi possível determinar o remetente do e-mail.");
+			throw new IllegalArgumentException("Não foi possível determinar o remetente do e-mail.");
 		}
 
 		try {
