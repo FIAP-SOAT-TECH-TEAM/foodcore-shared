@@ -1,5 +1,6 @@
 package com.soat.fiap.food.core.shared.infrastructure.out.email;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,6 +23,8 @@ public class DefaultEmailDataSource implements EmailDataSource {
 
 	private final JavaMailSender mailSender;
 	private final AuthenticatedUserSource authenticatedUserSource;
+	@Value("${spring.mail.from}")
+	private String from;
 
 	@Override
 	public void sendEmail(String recipient, String subject, String body) {
@@ -34,6 +37,9 @@ public class DefaultEmailDataSource implements EmailDataSource {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+			if (from != null && !from.isEmpty())
+				helper.setFrom(from);
 
 			helper.setTo(recipient);
 			helper.setSubject(subject);
