@@ -160,9 +160,9 @@ jacocoTestReport {
 }
 
 // Adicionar a extração de dependências ao build
-tasks.named('build') {
-	dependsOn extractDependencies
-}
+// tasks.named('build') {
+// 	dependsOn extractDependencies
+// }
 
 // Configuração do SonarQube
 sonar {
