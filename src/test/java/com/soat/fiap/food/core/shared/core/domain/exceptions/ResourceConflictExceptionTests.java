@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class ResourceConflictExceptionTest {
 
-	@Test
-	@DisplayName("Deve criar ResourceConflictException com mensagem direta")
+	@Test @DisplayName("Deve criar ResourceConflictException com mensagem direta")
 	void shouldCreateWithCustomMessage() {
 		String message = "CPF já existente";
 
@@ -17,15 +16,10 @@ class ResourceConflictExceptionTest {
 		assertEquals(message, exception.getMessage());
 	}
 
-	@Test
-	@DisplayName("Deve criar ResourceConflictException com mensagem formatada")
+	@Test @DisplayName("Deve criar ResourceConflictException com mensagem formatada")
 	void shouldCreateWithFormattedMessage() {
-		ResourceConflictException exception =
-				new ResourceConflictException("Usuário", "CPF", "12345678900");
+		ResourceConflictException exception = new ResourceConflictException("Usuário", "CPF", "12345678900");
 
-		assertEquals(
-				"Já existe um(a) Usuário com CPF: 12345678900",
-				exception.getMessage()
-		);
+		assertEquals("Já existe um(a) Usuário com CPF: 12345678900", exception.getMessage());
 	}
 }

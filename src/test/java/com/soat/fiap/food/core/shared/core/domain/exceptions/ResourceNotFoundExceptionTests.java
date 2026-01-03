@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class ResourceNotFoundExceptionTest {
 
-	@Test
-	@DisplayName("Deve criar ResourceNotFoundException com mensagem direta")
+	@Test @DisplayName("Deve criar ResourceNotFoundException com mensagem direta")
 	void shouldCreateWithCustomMessage() {
 		String message = "Pedido não encontrado";
 
@@ -17,27 +16,17 @@ class ResourceNotFoundExceptionTest {
 		assertEquals(message, exception.getMessage());
 	}
 
-	@Test
-	@DisplayName("Deve criar ResourceNotFoundException com resource, campo e valor")
+	@Test @DisplayName("Deve criar ResourceNotFoundException com resource, campo e valor")
 	void shouldCreateWithResourceAndField() {
-		ResourceNotFoundException exception =
-				new ResourceNotFoundException("Usuário", "email", "teste@email.com");
+		ResourceNotFoundException exception = new ResourceNotFoundException("Usuário", "email", "teste@email.com");
 
-		assertEquals(
-				"Usuário não encontrado com email: teste@email.com",
-				exception.getMessage()
-		);
+		assertEquals("Usuário não encontrado com email: teste@email.com", exception.getMessage());
 	}
 
-	@Test
-	@DisplayName("Deve criar ResourceNotFoundException com resource e id")
+	@Test @DisplayName("Deve criar ResourceNotFoundException com resource e id")
 	void shouldCreateWithResourceAndId() {
-		ResourceNotFoundException exception =
-				new ResourceNotFoundException("Pedido", 10L);
+		ResourceNotFoundException exception = new ResourceNotFoundException("Pedido", 10L);
 
-		assertEquals(
-				"Pedido não encontrado com id: 10",
-				exception.getMessage()
-		);
+		assertEquals("Pedido não encontrado com id: 10", exception.getMessage());
 	}
 }
