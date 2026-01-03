@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class BusinessExceptionTest {
 
-	@Test
-	@DisplayName("Deve criar BusinessException com mensagem")
+	@Test @DisplayName("Deve criar BusinessException com mensagem")
 	void shouldCreateBusinessExceptionWithMessage() {
 		String message = "Regra de negócio violada";
 
@@ -18,8 +17,7 @@ class BusinessExceptionTest {
 		assertNull(exception.getCause());
 	}
 
-	@Test
-	@DisplayName("Deve criar BusinessException com mensagem e causa")
+	@Test @DisplayName("Deve criar BusinessException com mensagem e causa")
 	void shouldCreateBusinessExceptionWithMessageAndCause() {
 		String message = "Erro de negócio";
 		Throwable cause = new IllegalStateException("Causa raiz");
