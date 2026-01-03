@@ -27,6 +27,16 @@ configurations {
 	}
 }
 
+
+//Configuração do Spring Dependency Management com base no BOM do Spring Boot
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.5"
+	}
+}
+
+
 publishing {
 	repositories {
 		maven {
@@ -76,6 +86,8 @@ dependencies {
 	// Lombok e MapStruct
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
