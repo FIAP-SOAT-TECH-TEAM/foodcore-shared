@@ -33,7 +33,7 @@ publishing {
 			name = "GitHubPackages"
 			url = uri("https://maven.pkg.github.com/FIAP-SOAT-TECH-TEAM/foodcore-shared")
 			credentials {
-				username = System.getenv("GITHUB_USERNAME") ?: env.GITHUB_USERNAME.value
+				username = System.getenv("GITHUB_ACTOR") ?: env.GITHUB_USERNAME.value
 				password = System.getenv("GITHUB_TOKEN") ?: env.GITHUB_TOKEN.value
 			}
 		}
