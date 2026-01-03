@@ -69,6 +69,48 @@ jobs:
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
 
+  changelog:
+    runs-on: ubuntu-latest
+    needs: versioning
+    if: |
+      github.ref == 'refs/heads/main' ||
+      github.ref == 'refs/heads/master' ||
+      github.ref == 'refs/heads/teste'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install semantic-release
+        run: npm install -g semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github
+
+      - name: Generate / Update CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          semantic-release --dry-run
+
+      - name: Commit CHANGELOG.md
+        run: |
+          if git status --porcelain | grep CHANGELOG.md; then
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+
+            git add CHANGELOG.md
+            git commit -m "chore(release): update changelog [skip ci]"
+            git push
+          else
+            echo "No changelog changes detected"
+          fi
+
+
   infra-info:
     runs-on: ubuntu-latest
     needs: versioning
