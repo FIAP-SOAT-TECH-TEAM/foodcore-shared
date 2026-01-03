@@ -11,6 +11,7 @@ on:
       - main
       - master
       - dev
+      - teste
 
 permissions:
   contents: read
