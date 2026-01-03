@@ -63,9 +63,9 @@ jobs:
   changelog-test:
     name: Generate CHANGELOG (Test Only)
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'push' &&
-      github.ref == 'refs/heads/teste'
+    # if: |
+    #   github.event_name == 'push' &&
+    #   github.ref == 'refs/heads/teste'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
