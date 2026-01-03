@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class CycleAvoidingMappingContextTest {
 
-	@Test
-	@DisplayName("Deve armazenar e recuperar instância mapeada")
+	@Test @DisplayName("Deve armazenar e recuperar instância mapeada")
 	void shouldStoreAndRetrieveMappedInstance() {
 		CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
@@ -22,8 +21,7 @@ class CycleAvoidingMappingContextTest {
 		assertEquals(target, result);
 	}
 
-	@Test
-	@DisplayName("Deve retornar null quando não existir instância mapeada")
+	@Test @DisplayName("Deve retornar null quando não existir instância mapeada")
 	void shouldReturnNullWhenNoMappedInstanceExists() {
 		CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
@@ -34,8 +32,7 @@ class CycleAvoidingMappingContextTest {
 		assertNull(result);
 	}
 
-	@Test
-	@DisplayName("Deve usar identidade e não equals para armazenar instâncias")
+	@Test @DisplayName("Deve usar identidade e não equals para armazenar instâncias")
 	void shouldUseIdentityHashMap() {
 		CycleAvoidingMappingContext context = new CycleAvoidingMappingContext();
 
