@@ -1,7 +1,6 @@
 plugins {
 	id 'java'
 	id 'maven-publish'
-	id 'org.springframework.boot' version '3.4.5'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'jacoco'
 	id 'org.sonarqube' version '4.4.1.3373'
@@ -11,7 +10,8 @@ plugins {
 }
 
 group = 'com.soat.fiap'
-version = '0.0.1'
+version = System.getenv("APP_VERSION") ?: "0.0.0-local"
+
 
 java {
 	toolchain {
@@ -27,14 +27,24 @@ configurations {
 	}
 }
 
+
+//Configuração do Spring Dependency Management com base no BOM do Spring Boot
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.5"
+	}
+}
+
+
 publishing {
 	repositories {
 		maven {
 			name = "GitHubPackages"
 			url = uri("https://maven.pkg.github.com/FIAP-SOAT-TECH-TEAM/foodcore-shared")
 			credentials {
-				username = System.getenv("GITHUB_USERNAME") ?: env.GITHUB_USERNAME.value
-				password = System.getenv("GITHUB_TOKEN") ?: env.GITHUB_TOKEN.value
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
 			}
 		}
 	}
@@ -76,11 +86,16 @@ dependencies {
 	// Lombok e MapStruct
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
 	// Testes
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// Azure Storage Blob
@@ -160,9 +175,9 @@ jacocoTestReport {
 }
 
 // Adicionar a extração de dependências ao build
-tasks.named('build') {
-	dependsOn extractDependencies
-}
+// tasks.named('build') {
+// 	dependsOn extractDependencies
+// }
 
 // Configuração do SonarQube
 sonar {
