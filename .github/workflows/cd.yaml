@@ -31,15 +31,20 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install semantic-release
+      - name: Install semantic-release dependencies
         run: |
-          npm install -g semantic-release \
+          npm init -y
+          npm install --save-dev \
+            semantic-release \
             @semantic-release/git \
             @semantic-release/changelog \
-            @semantic-release/github
+            @semantic-release/github \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator \
+            conventional-changelog-conventionalcommits
 
       - name: Run semantic-release
-        run: semantic-release
+        run: npx semantic-release
 
       - name: Set up Java
         uses: actions/setup-java@v3
