@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class UserDTOTest {
 
-	@Test
-	@DisplayName("Deve permitir setar e obter nome e email")
+	@Test @DisplayName("Deve permitir setar e obter nome e email")
 	void shouldSetAndGetFields() {
 		UserDTO user = new UserDTO();
 
@@ -19,8 +18,7 @@ class UserDTOTest {
 		assertEquals("joao@email.com", user.getEmail());
 	}
 
-	@Test
-	@DisplayName("Dois UserDTOs com mesmos dados devem ser iguais")
+	@Test @DisplayName("Dois UserDTOs com mesmos dados devem ser iguais")
 	void shouldBeEqualWhenFieldsAreEqual() {
 		UserDTO user1 = new UserDTO();
 		user1.setName("Maria");
@@ -34,8 +32,7 @@ class UserDTOTest {
 		assertEquals(user1.hashCode(), user2.hashCode());
 	}
 
-	@Test
-	@DisplayName("Dois UserDTOs com dados diferentes não devem ser iguais")
+	@Test @DisplayName("Dois UserDTOs com dados diferentes não devem ser iguais")
 	void shouldNotBeEqualWhenFieldsAreDifferent() {
 		UserDTO user1 = new UserDTO();
 		user1.setName("Maria");
@@ -48,8 +45,7 @@ class UserDTOTest {
 		assertNotEquals(user1, user2);
 	}
 
-	@Test
-	@DisplayName("toString deve conter nome e email")
+	@Test @DisplayName("toString deve conter nome e email")
 	void toStringShouldContainFields() {
 		UserDTO user = new UserDTO();
 		user.setName("Carlos");
