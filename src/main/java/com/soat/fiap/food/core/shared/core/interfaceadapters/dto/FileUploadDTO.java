@@ -13,9 +13,10 @@ public record FileUploadDTO(String fileName, byte[] content) {
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof FileUploadDTO(String name, byte[] content1)))
+		if (!(o instanceof FileUploadDTO))
 			return false;
-		return Objects.equals(fileName, name) && Arrays.equals(content, content1);
+		FileUploadDTO that = (FileUploadDTO) o;
+		return Objects.equals(fileName, that.fileName) && Arrays.equals(content, that.content);
 	}
 
 	@Override
