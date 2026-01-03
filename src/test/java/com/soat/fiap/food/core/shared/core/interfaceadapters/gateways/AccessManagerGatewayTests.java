@@ -22,8 +22,7 @@ class AccessManagerGatewayTest {
 	@InjectMocks
 	private AccessManagerGateway gateway;
 
-	@Test
-	@DisplayName("Deve validar acesso chamando o AccessManagerSource")
+	@Test @DisplayName("Deve validar acesso chamando o AccessManagerSource")
 	void shouldValidateAccessSuccessfully() {
 		String userId = "123";
 
@@ -32,17 +31,12 @@ class AccessManagerGatewayTest {
 		verify(accessManagerSource).validateAccess(userId);
 	}
 
-	@Test
-	@DisplayName("Deve propagar AccessDeniedException")
+	@Test @DisplayName("Deve propagar AccessDeniedException")
 	void shouldPropagateAccessDeniedException() {
 		String userId = "123";
 
-		doThrow(new AccessDeniedException("Acesso negado"))
-				.when(accessManagerSource).validateAccess(userId);
+		doThrow(new AccessDeniedException("Acesso negado")).when(accessManagerSource).validateAccess(userId);
 
-		assertThrows(
-				AccessDeniedException.class,
-				() -> gateway.validateAccess(userId)
-		);
+		assertThrows(AccessDeniedException.class, () -> gateway.validateAccess(userId));
 	}
 }

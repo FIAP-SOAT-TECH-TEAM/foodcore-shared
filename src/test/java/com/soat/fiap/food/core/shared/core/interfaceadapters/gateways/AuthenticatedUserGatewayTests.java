@@ -66,8 +66,7 @@ class AuthenticatedUserGatewayTest {
 		assertEquals("ADMIN", gateway.getRole());
 	}
 
-	@Test
-	@DisplayName("Deve retornar data de criação do usuário")
+	@Test @DisplayName("Deve retornar data de criação do usuário")
 	void shouldReturnCreationDate() {
 		OffsetDateTime now = OffsetDateTime.now();
 		when(authenticatedUserSource.getCreationDate()).thenReturn(now);
