@@ -20,12 +20,10 @@ class EmailGatewayTest {
 	@InjectMocks
 	private EmailGateway gateway;
 
-	@Test
-	@DisplayName("Deve enviar email chamando EmailDataSource")
+	@Test @DisplayName("Deve enviar email chamando EmailDataSource")
 	void shouldSendEmail() {
 		gateway.sendEmail("dest@email.com", "Assunto", "Conteúdo");
 
-		verify(emailDataSource)
-				.sendEmail("dest@email.com", "Assunto", "Conteúdo");
+		verify(emailDataSource).sendEmail("dest@email.com", "Assunto", "Conteúdo");
 	}
 }

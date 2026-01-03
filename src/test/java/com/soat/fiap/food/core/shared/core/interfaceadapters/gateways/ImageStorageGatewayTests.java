@@ -22,8 +22,7 @@ class ImageStorageGatewayTest {
 	@InjectMocks
 	private ImageStorageGateway gateway;
 
-	@Test
-	@DisplayName("Deve fazer upload da imagem e retornar URL")
+	@Test @DisplayName("Deve fazer upload da imagem e retornar URL")
 	void shouldUploadImage() {
 		FileUploadDTO file = mock(FileUploadDTO.class);
 		String path = "catalogs/1/categories/5";
@@ -37,8 +36,7 @@ class ImageStorageGatewayTest {
 		verify(imageDataSource).uploadImage(path, file);
 	}
 
-	@Test
-	@DisplayName("Deve deletar imagem chamando ImageDataSource")
+	@Test @DisplayName("Deve deletar imagem chamando ImageDataSource")
 	void shouldDeleteImage() {
 		String imageUrl = "https://blob/image.png";
 
