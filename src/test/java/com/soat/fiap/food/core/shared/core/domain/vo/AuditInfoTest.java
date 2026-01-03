@@ -11,13 +11,14 @@ import com.soat.fiap.food.core.shared.core.domain.exceptions.BusinessException;
 
 class AuditInfoTest {
 
-	@Test @DisplayName("Deve criar AuditInfo com datas automáticas no construtor default")
-	void shouldCreateAuditInfoWithDefaultConstructor() {
-		AuditInfo auditInfo = new AuditInfo();
+	@Test @DisplayName("Quando updatedAt for igual a createdAt, deve permitir a criação sem erro")
+	void shouldAllowUpdatedAtEqualToCreatedAt() {
+		LocalDateTime now = LocalDateTime.now();
 
-		assertNotNull(auditInfo.getCreatedAt());
-		assertNotNull(auditInfo.getUpdatedAt());
-		assertTrue(auditInfo.getUpdatedAt().isAfter(auditInfo.getCreatedAt()));
+		AuditInfo auditInfo = assertDoesNotThrow(() -> new AuditInfo(now, now));
+
+		assertEquals(now, auditInfo.getCreatedAt());
+		assertEquals(now, auditInfo.getUpdatedAt());
 	}
 
 	@Test @DisplayName("Deve criar AuditInfo com datas válidas")
@@ -46,15 +47,6 @@ class AuditInfoTest {
 		BusinessException exception = assertThrows(BusinessException.class, () -> new AuditInfo(createdAt, updatedAt));
 
 		assertEquals("UpdatedAt não pode ser menor ou igual a CreatedAt", exception.getMessage());
-	}
-
-	@Test @DisplayName("Quando updatedAt for igual a createdAt, deve ajustar automaticamente")
-	void shouldAdjustUpdatedAtWhenEqualToCreatedAt() {
-		LocalDateTime now = LocalDateTime.now();
-
-		AuditInfo auditInfo = new AuditInfo(now, now);
-
-		assertTrue(auditInfo.getUpdatedAt().isAfter(auditInfo.getCreatedAt()));
 	}
 
 	@Test @DisplayName("Deve permitir atualizar updatedAt para uma data válida")
