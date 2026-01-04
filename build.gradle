@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'com.soat.fiap'
-version = System.getenv("APP_VERSION") ?: "0.0.0-local"
+version = System.getenv("APP_VERSION")
 
 
 java {
