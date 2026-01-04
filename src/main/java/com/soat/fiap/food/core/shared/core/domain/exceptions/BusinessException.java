@@ -1,5 +1,4 @@
 package com.soat.fiap.food.core.shared.core.domain.exceptions;
-
 /**
  * Exceção lançada quando uma regra de negócio é violada
  */
