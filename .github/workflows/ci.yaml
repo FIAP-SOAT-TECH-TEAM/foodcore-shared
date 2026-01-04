@@ -1,17 +1,10 @@
-name: CI
+name: CI Pipeline
 
 on:
-  push:
-    branches:
-      - main
-      - master
-      - dev
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - main
-      - master
-      - dev
-      - teste
 
 permissions:
   contents: read
