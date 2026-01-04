@@ -44,8 +44,14 @@ jobs:
       - name: Run semantic-release and export version
         run: npx semantic-release
 
+
       - name: Debug version
-        run: echo "Publishing version $APP_VERSION"
+        run: |
+          if [ -z "$APP_VERSION" ]; then
+            echo "❌ No release generated. Commit does not follow Conventional Commits. Skipping publish."
+          else
+            echo "Publishing version $APP_VERSION"
+          fi
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -58,4 +64,5 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish to GitHub Packages
+        if: env.APP_VERSION != ''
         run: ./gradlew publish --no-daemon
