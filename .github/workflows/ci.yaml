@@ -1,0 +1,46 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  testing-and-building:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Configure Gradle mirrors
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/init.gradle
+          allprojects {
+            repositories {
+              mavenCentral()
+            }
+          }
+          EOF
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: gradle
+
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x gradlew
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Build project
+        run: ./gradlew build -x test

@@ -1,0 +1,272 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'jacoco'
+	id 'org.sonarqube' version '4.4.1.3373'
+	id 'com.diffplug.spotless' version '6.25.0'
+	id("co.uzzu.dotenv.gradle") version "4.0.0"
+	id 'java-library'
+}
+
+group = 'com.soat.fiap'
+version = System.getenv("APP_VERSION") ?: "0.0.0-local"
+
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+	withSourcesJar()
+	withJavadocJar()
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+
+//Configuração do Spring Dependency Management com base no BOM do Spring Boot
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.boot:spring-boot-dependencies:3.4.5"
+	}
+}
+
+
+publishing {
+	repositories {
+		maven {
+			name = "GitHubPackages"
+			url = uri("https://maven.pkg.github.com/FIAP-SOAT-TECH-TEAM/foodcore-shared")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+			artifactId = 'foodcore-shared'
+		}
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('mapstructVersion', "1.5.5.Final")
+	set('springdocVersion', "2.8.4")
+	set('lombokVersion', "1.18.28")
+	set('azureBlobSdk', "12.25.0")
+	set('gsonVersion', "2.11.0")
+	set('awsCognitoSdk', "2.37.3")
+}
+
+dependencies {
+
+	// Spring Boot
+	compileOnly 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// SpringDoc (Swagger/OpenAPI)
+	compileOnly "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
+
+	// Gson
+	api("com.google.code.gson:gson:${gsonVersion}")
+
+	// Lombok e MapStruct
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	// Testes
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// Azure Storage Blob
+	implementation("com.azure:azure-storage-blob:${azureBlobSdk}")
+
+	// AWS Cognito SDK
+	implementation("software.amazon.awssdk:cognitoidentityprovider:${awsCognitoSdk}")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+// Integrar Spotless no build process - funciona automaticamente para todos
+tasks.named('compileJava') {
+	dependsOn 'spotlessCheck'
+}
+
+tasks.named('build') {
+	dependsOn 'spotlessCheck'
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		html.required = true
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+				// Application main class
+				'**/FoodCoreApiApplication.class',
+				// Configuration classes
+				'**/config/**',
+				'**/*Config.class',
+				'**/*Configuration.class',
+				'**/*Properties.class',
+				// DTOs and Request/Response classes
+				'**/dto/**',
+				'**/request/**',
+				'**/response/**',
+				// MapStruct generated mappers
+				'**/mapper/**/*Impl.class',
+				'**/mapper/**/*MapperImpl*.class',
+				// Infrastructure adapters (controllers, repositories, etc.)
+				'**/infrastructure/in/web/api/controller/**',
+				'**/infrastructure/in/web/api/auth/**',
+				'**/infrastructure/in/web/api/exceptions/**',
+				'**/infrastructure/in/event/listener/**',
+				'**/infrastructure/in/schedulers/**',
+				'**/infrastructure/out/persistence/**/*Repository*.class',
+				'**/infrastructure/out/persistence/**/*DataSource*.class',
+				'**/infrastructure/out/persistence/**/*Entity*.class',
+				'**/infrastructure/out/persistence/**/*Converter*.class',
+				'**/infrastructure/out/mercadopago/client/**',
+				'**/infrastructure/out/mercadopago/entity/**',
+				'**/infrastructure/out/mercadopago/config/**',
+				'**/infrastructure/out/mercadopago/deserializers/**',
+				'**/infrastructure/out/mercadopago/exceptions/**',
+				'**/infrastructure/out/mercadopago/mapper/**',
+				'**/infrastructure/out/event/publisher/**',
+				'**/infrastructure/out/persistence/azureblobstorage/**',
+				// Interface adapters (controllers, presenters, gateways)
+				'**/interfaceadapters/controller/web/api/**',
+				'**/interfaceadapters/presenter/web/api/**',
+				'**/interfaceadapters/gateways/**',
+				// Common infrastructure
+				'**/infrastructure/common/source/**',
+				'**/infrastructure/common/mapper/**',
+				// Package info files
+				'**/package-info.class'
+			])
+		}))
+	}
+}
+
+// Adicionar a extração de dependências ao build
+// tasks.named('build') {
+// 	dependsOn extractDependencies
+// }
+
+// Configuração do SonarQube
+sonar {
+	properties {
+		property 'sonar.projectKey', 'com.soat.fiap.foodcore-payment'
+		property 'sonar.projectName', 'Food Core Payment'
+		property 'sonar.sources', 'src/main/java'
+		property 'sonar.tests', 'src/test/java'
+		property 'sonar.java.binaries', 'build/classes/java/main'
+		property 'sonar.java.test.binaries', 'build/classes/java/test'
+		property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+		property 'sonar.exclusions', [
+			// Application main class
+			'**/FoodCoreApiApplication.java',
+			// Configuration classes
+			'**/config/**',
+			'**/*Config.java',
+			'**/*Configuration.java',
+			'**/*Properties.java',
+			// DTOs and Request/Response classes
+			'**/dto/**',
+			'**/request/**',
+			'**/response/**',
+			// MapStruct generated mappers
+			'**/mapper/**/*Impl.java',
+			'**/mapper/**/*MapperImpl*.java',
+			// Infrastructure adapters (controllers, repositories, etc.)
+			'**/infrastructure/in/web/api/controller/**',
+			'**/infrastructure/in/web/api/auth/**',
+			'**/infrastructure/in/web/api/exceptions/**',
+			'**/infrastructure/in/event/listener/**',
+			'**/infrastructure/in/schedulers/**',
+			'**/infrastructure/out/persistence/**/*Repository*.java',
+			'**/infrastructure/out/persistence/**/*DataSource*.java',
+			'**/infrastructure/out/persistence/**/*Entity*.java',
+			'**/infrastructure/out/persistence/**/*Converter*.java',
+			'**/infrastructure/out/mercadopago/client/**',
+			'**/infrastructure/out/mercadopago/entity/**',
+			'**/infrastructure/out/mercadopago/config/**',
+			'**/infrastructure/out/mercadopago/deserializers/**',
+			'**/infrastructure/out/mercadopago/exceptions/**',
+			'**/infrastructure/out/mercadopago/mapper/**',
+			'**/infrastructure/out/event/publisher/**',
+			'**/infrastructure/out/persistence/azureblobstorage/**',
+			// Interface adapters (controllers, presenters, gateways)
+			'**/interfaceadapters/controller/web/api/**',
+			'**/interfaceadapters/presenter/web/api/**',
+			'**/interfaceadapters/gateways/**',
+			// Common infrastructure
+			'**/infrastructure/common/source/**',
+			'**/infrastructure/common/mapper/**',
+			// Package info files
+			'**/package-info.java'
+		].join(',')
+		property 'sonar.test.exclusions', '**/fixtures/**'
+	}
+}
+
+// Configuração do Spotless para formatação de código
+spotless {
+	java {
+		// Usa o Eclipse formatter com configurações customizadas
+		eclipse().configFile('spotless-formatter.xml')
+
+		// Remove imports não utilizados
+		removeUnusedImports()
+
+		// Organiza imports de acordo com o padrão do IntelliJ
+		importOrder('java', 'javax', 'org', 'com', '')
+
+		// Remove espaços em branco no final das linhas
+		trimTrailingWhitespace()
+
+		// Garante que arquivos terminem com nova linha
+		endWithNewline()
+
+		// Aplica formatação apenas nos arquivos Java do src
+		target 'src/**/*.java'
+
+		// Ignora arquivos gerados
+		targetExclude '**/generated/**', '**/build/**'
+
+		// Configurações específicas do IntelliJ
+		formatAnnotations()
+	}
+
+	// Formatação para arquivos Gradle
+	groovyGradle {
+		target '*.gradle'
+		greclipse()
+	}
+}
