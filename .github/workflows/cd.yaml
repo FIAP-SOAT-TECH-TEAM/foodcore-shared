@@ -41,6 +41,7 @@ jobs:
             @semantic-release/github \
             @semantic-release/commit-analyzer \
             @semantic-release/release-notes-generator \
+            @semantic-release/exec \
             conventional-changelog-conventionalcommits
 
       - name: Run semantic-release and export version
