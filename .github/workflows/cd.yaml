@@ -47,6 +47,9 @@ jobs:
       - name: Run semantic-release and export version
         run: npx semantic-release
 
+      - name: Debug version
+        run: echo "Publishing version $APP_VERSION"
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
