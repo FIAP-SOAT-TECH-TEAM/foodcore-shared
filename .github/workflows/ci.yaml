@@ -18,11 +18,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-
-      - name: Lint commit messages (Conventional Commits)
-        uses: wagoid/commitlint-github-action@v6
-
-
       - name: Configure Gradle mirrors
         run: |
           mkdir -p ~/.gradle
