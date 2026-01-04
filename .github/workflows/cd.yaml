@@ -48,7 +48,7 @@ jobs:
       - name: Debug version
         run: |
           if [ -z "$APP_VERSION" ]; then
-            echo "No release generated. Skipping publish."
+            echo "❌ No release generated. Commit does not follow Conventional Commits. Skipping publish."
           else
             echo "Publishing version $APP_VERSION"
           fi
