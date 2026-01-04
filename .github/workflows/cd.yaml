@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - teste
 
 permissions:
   contents: write
@@ -35,7 +34,6 @@ jobs:
           npm init -y
           npm install --save-dev \
             semantic-release \
-            @semantic-release/git \
             @semantic-release/changelog \
             @semantic-release/github \
             @semantic-release/commit-analyzer \
