@@ -1,4 +1,4 @@
-# � FoodCore Shared
+# 📦 FoodCore Shared
 
 <div align="center">
 
