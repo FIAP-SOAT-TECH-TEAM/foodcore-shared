@@ -1,12 +1,12 @@
 # 📦 FoodCore Shared
- 
+
 <div align="center">
- 
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
- 
+
 </div>
 
 Biblioteca compartilhada contendo componentes, interfaces, DTOs e configurações comuns aos microsserviços do ecossistema FoodCore. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
@@ -28,7 +28,26 @@ Biblioteca compartilhada contendo componentes, interfaces, DTOs e configuraçõe
 
 <h2 id="visao-geral">📋 Visão Geral</h2>
 
-O **FoodCore Shared** é uma biblioteca Java que centraliza código reutilizável entre os microsserviços do sistema FoodCore. Esta abordagem promove:
+O **FoodCore Shared** é uma **biblioteca Java de recursos compartilhados** utilizada pelos microsserviços do ecossistema FoodCore.
+
+Embora o sistema siga os princípios de **Arquitetura de Microsserviços**, onde serviços **não devem depender uns dos outros**, identificamos que todos os microsserviços são implementados em **Java** e compartilham um conjunto significativo de **estruturas técnicas e contratuais**, como DTOs, exceções, interfaces de gateway e configurações comuns.
+
+Diante disso, optou-se por **extrair esses elementos transversais para um pacote compartilhado**, evitando duplicação de código e garantindo padronização, **sem violar o isolamento dos domínios de negócio**.
+
+---
+> ⚠️ **Importante:**
+> O **FoodCore Shared não é um microsserviço**.
+> Ele não possui lógica de negócio, banco de dados ou responsabilidades de domínio, atuando exclusivamente como uma **biblioteca reutilizável**.
+---
+> 📌 A dependência de uma biblioteca compartilhada **não configura acoplamento entre microsserviços**, desde que:
+>
+> - Não contenha regras de negócio
+> - Não exponha detalhes internos de outros serviços
+> - Seja versionada e consumida como dependência externa
+>
+---
+
+O pacote **FoodCore Shared** nos ajuda promovendo:
 
 - **Consistência**: Mesmas interfaces e DTOs em todos os microsserviços
 - **Reutilização**: Evita duplicação de código comum
@@ -50,18 +69,15 @@ O **FoodCore Shared** é uma biblioteca Java que centraliza código reutilizáve
 
 <h2 id="arquitetura">🧱 Arquitetura</h2>
 
-O sistema FoodCore é composto por microsserviços independentes que seguem os princípios de:
+O FoodCore Shared foi projetado seguindo as seguintes premissas:
 
-### 🎯 Padrões Arquiteturais
+- ❌ **Nenhuma regra de negócio**
+- ❌ **Nenhum acoplamento entre bounded contexts**
+- ❌ **Nenhuma dependência entre microsserviços**
+- ✅ Apenas **contratos**, **infraestrutura comum** e **elementos técnicos reutilizáveis**
+- ✅ Dependência unidirecional: **microsserviços → shared**
 
-- **Arquitetura de Microsserviços**: Serviços independentes e especializados
-- **Clean Architecture**: Domínio independente de frameworks e infraestrutura
-- **Domain-Driven Design (DDD)**: Bounded contexts bem definidos
-- **SAGA Coreografada**: Comunicação assíncrona entre microsserviços via eventos
-- **Service Discovery**: Descoberta de serviços via API Gateway
-- **Circuit Breaker**: Resiliência na comunicação entre serviços
-- **Lei de Demeter**: Baixo acoplamento entre componentes
-- **Webhooks**: Integração com serviços externos (Mercado Pago)
+Dentro desse contexto, o FoodCore Shared atua como uma **camada de suporte técnico**, auxiliando na padronização e reutilização de código, sem comprometer a autonomia dos microsserviços.
 
 ### 🌐 Infraestrutura
 
