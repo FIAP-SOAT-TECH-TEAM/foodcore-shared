@@ -1,34 +1,45 @@
 # 📦 FoodCore Shared
- 
-<div align="center">
- 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=FIAP-SOAT-TECH-TEAM_foodcore-shared&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=FIAP-SOAT-TECH-TEAM_foodcore-shared)
- 
-</div>
 
 Biblioteca compartilhada contendo componentes, interfaces, DTOs e configurações comuns aos microsserviços do ecossistema FoodCore. Desenvolvida como parte do curso de Arquitetura de Software da FIAP (Tech Challenge).
 
 <div align="center">
   <a href="#visao-geral">Visão Geral</a> •
-  <a href="#arquitetura-geral">Arquitetura Geral</a> •
+  <a href="#arquitetura">Arquitetura</a> •
   <a href="#repositorios">Repositórios</a> •
   <a href="#componentes">Componentes</a> •
   <a href="#tecnologias">Tecnologias</a> •
-  <a href="#instalacao">Instalação</a> •
-  <a href="#dicionario">Dicionário de Linguagem Ubíqua</a> •
+  <a href="#deploy">Fluxo de deploy</a> •
+  <a href="#instalacao-e-uso">Instalação e Uso</a> •
   <a href="#contribuicao">Contribuição</a>
 </div><br>
 
-> 📽️ Vídeo de demonstração da arquitetura: [https://www.youtube.com/watch?v=XgUpOKJjqak](https://www.youtube.com/watch?v=XgUpOKJjqak)<br>
+> 📽️ Vídeo de demonstração da arquitetura: [https://youtu.be/k3XbPRxmjCw](https://youtu.be/k3XbPRxmjCw)<br>
 
 ---
 
 <h2 id="visao-geral">📋 Visão Geral</h2>
 
-O **FoodCore Shared** é uma biblioteca Java que centraliza código reutilizável entre os microsserviços do sistema FoodCore. Esta abordagem promove:
+O **FoodCore Shared** é uma **biblioteca Java de recursos compartilhados** utilizada pelos microsserviços do ecossistema FoodCore.
+
+Embora o sistema siga os princípios de **Arquitetura de Microsserviços**, onde serviços **não devem depender uns dos outros**, identificamos que todos os microsserviços são implementados em **Java** e compartilham um conjunto significativo de **estruturas técnicas e contratuais**, como DTOs, exceções, interfaces de gateway e configurações comuns.
+
+Diante disso, optou-se por **extrair esses elementos transversais para um pacote compartilhado**, evitando duplicação de código e garantindo padronização, **sem violar o isolamento dos domínios de negócio**.
+
+---
+> ⚠️ **Importante:**
+> O **FoodCore Shared não é um microsserviço**.
+> Ele não possui lógica de negócio, banco de dados ou responsabilidades de domínio, atuando exclusivamente como uma **biblioteca reutilizável**.
+> Mesmo sendo uma biblioteca, criamos testes unitários, mas não o integramos ao sonar, diferente dos **microserviços** que **possuem** essa integração.
+---
+> 📌 A dependência de uma biblioteca compartilhada **não configura acoplamento entre microsserviços**, desde que:
+>
+> - Não contenha regras de negócio
+> - Não exponha detalhes internos de outros serviços
+> - Seja versionada e consumida como dependência externa
+>
+---
+
+O pacote **FoodCore Shared** nos ajuda promovendo:
 
 - **Consistência**: Mesmas interfaces e DTOs em todos os microsserviços
 - **Reutilização**: Evita duplicação de código comum
@@ -50,18 +61,15 @@ O **FoodCore Shared** é uma biblioteca Java que centraliza código reutilizáve
 
 <h2 id="arquitetura">🧱 Arquitetura</h2>
 
-O sistema FoodCore é composto por microsserviços independentes que seguem os princípios de:
+O FoodCore Shared foi projetado seguindo as seguintes premissas:
 
-### 🎯 Padrões Arquiteturais
+- ❌ **Nenhuma regra de negócio**
+- ❌ **Nenhum acoplamento entre bounded contexts**
+- ❌ **Nenhuma dependência entre microsserviços**
+- ✅ Apenas **contratos**, **infraestrutura comum** e **elementos técnicos reutilizáveis**
+- ✅ Dependência unidirecional: **microsserviços → shared**
 
-- **Arquitetura de Microsserviços**: Serviços independentes e especializados
-- **Clean Architecture**: Domínio independente de frameworks e infraestrutura
-- **Domain-Driven Design (DDD)**: Bounded contexts bem definidos
-- **SAGA Coreografada**: Comunicação assíncrona entre microsserviços via eventos
-- **Service Discovery**: Descoberta de serviços via API Gateway
-- **Circuit Breaker**: Resiliência na comunicação entre serviços
-- **Lei de Demeter**: Baixo acoplamento entre componentes
-- **Webhooks**: Integração com serviços externos (Mercado Pago)
+Dentro desse contexto, o FoodCore Shared atua como uma **camada de suporte técnico**, auxiliando na padronização e reutilização de código, sem comprometer a autonomia dos microsserviços.
 
 ### 🌐 Infraestrutura
 
@@ -169,7 +177,46 @@ infrastructure/common/
 
 ---
 
-<h2 id="instalacao">� Instalação e Uso</h2>
+<h2 id="deploy">⚙️ Fluxo de Deploy</h2>
+
+<details>
+<summary>Expandir para mais detalhes</summary>
+
+### Pipeline
+
+1. **Pull Request**
+   - Preencher template de pull request adequadamente
+
+2. **Revisão e Aprovação**
+   - Mínimo 1 aprovação de CODEOWNER
+
+3. **Merge para Main**
+
+### Proteções
+
+- Branch `main` protegida
+- Nenhum push direto permitido
+- Todos os checks devem passar
+
+### Ordem de Provisionamento
+
+```
+1. foodcore-infra        (AKS, VNET)
+2. foodcore-db           (Bancos de dados)
+3. foodcore-auth           (Azure Function Authorizer)
+4. foodcore-observability (Serviços de Observabilidade)
+5. foodcore-order            (Microsserviço de pedido)
+6. foodcore-payment            (Microsserviço de pagamento)
+7. foodcore-catalog            (Microsserviço de catálogo)
+```
+
+> ⚠️ Opcionalmente, as pipelines do repositório `foodcore-shared` podem ser executadas para publicação de um novo package. Atualizar os microsserviços para utilazarem a nova versão do pacote.
+
+</details>
+
+---
+
+<h2 id="instalacao-e-uso">🚀 Instalação e Uso</h2>
 
 ### Uso como Dependência
 
@@ -195,36 +242,7 @@ cd foodcore-shared
 
 # Publicar localmente
 ./gradlew publishToMavenLocal
-
-# Executar testes
-./gradlew test
 ```
-
----
-
-<h2 id="dicionario">📖 Dicionário de Linguagem Ubíqua</h2>
-
-<details>
-<summary>Expandir para mais detalhes</summary>
-
-| Termo | Descrição |
-|-------|-----------|
-| **Admin** | Usuário com privilégios elevados para gestão do sistema |
-| **Adquirente** | Instituição financeira que processa pagamentos (Mercado Pago) |
-| **Authentication** | Validação da identidade do usuário |
-| **Authorization** | Controle de acesso baseado em roles |
-| **Catalog** | Conjunto de produtos disponíveis |
-| **Category** | Classificação de produtos (lanches, bebidas, sobremesas) |
-| **Combo** | Conjunto personalizado: lanche + acompanhamento + bebida + sobremesa |
-| **Customer** | Cliente que realiza pedidos |
-| **Guest** | Cliente não identificado |
-| **Order** | Pedido com itens selecionados |
-| **Order Item** | Produto específico dentro de um pedido |
-| **Payment** | Processamento de pagamento via Mercado Pago |
-| **Product** | Item disponível para venda |
-| **Role** | Papel do usuário (ADMIN, ATENDENTE, GUEST) |
-
-</details>
 
 ---
 
@@ -246,5 +264,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 
 <div align="center">
   <strong>FIAP - Pós-graduação em Arquitetura de Software</strong><br>
-  Tech Challenge
+  Tech Challenge 4
 </div>
