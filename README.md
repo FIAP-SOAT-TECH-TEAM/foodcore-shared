@@ -29,6 +29,7 @@ Diante disso, optou-se por **extrair esses elementos transversais para um pacote
 > ⚠️ **Importante:**
 > O **FoodCore Shared não é um microsserviço**.
 > Ele não possui lógica de negócio, banco de dados ou responsabilidades de domínio, atuando exclusivamente como uma **biblioteca reutilizável**.
+> Mesmo sendo uma biblioteca, criamos testes unitários, mas não o integramos ao sonar, diferente dos **microserviços** que **possuem** essa integração.
 ---
 > 📌 A dependência de uma biblioteca compartilhada **não configura acoplamento entre microsserviços**, desde que:
 >
