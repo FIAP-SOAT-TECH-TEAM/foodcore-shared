@@ -8,7 +8,8 @@ Biblioteca compartilhada contendo componentes, interfaces, DTOs e configuraçõe
   <a href="#repositorios">Repositórios</a> •
   <a href="#componentes">Componentes</a> •
   <a href="#tecnologias">Tecnologias</a> •
-  <a href="#instalacao">Instalação</a> •
+  <a href="#deploy">Fluxo de deploy</a> •
+  <a href="#instalacao-e-uso">Instalação e Uso</a> •
   <a href="#contribuicao">Contribuição</a>
 </div><br>
 
@@ -214,7 +215,7 @@ infrastructure/common/
 
 ---
 
-<h2 id="instalacao">🚀 Instalação e Uso</h2>
+<h2 id="instalacao-e-uso">🚀 Instalação e Uso</h2>
 
 ### Uso como Dependência
 
